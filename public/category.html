@@ -419,21 +419,7 @@
         // Buy product function
         function buyProduct(productId) {
             const product = products.find(p => p.id === productId);
-            
-            // Create WhatsApp message
-            const message = `مرحباً! أرغب في شراء المنتج التالي:
-
-المنتج: ${product.name}
-السعر الشهري: ${formatNumber(calculateMonthlyPayment(product.price, 18, month18))} دينار/شهر
-
-هل يمكنني الحصول على مزيد من المعلومات؟`;
-            
-            // Encode message for WhatsApp URL
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/+9647701044448?text=${encodedMessage}`;
-            
-            // Open WhatsApp
-            window.open(whatsappUrl, '_blank');
+            window.location.href = `/product?id=${productId}`;
         }
     </script>
 </body>
