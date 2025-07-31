@@ -4,3 +4,4 @@ bun.lockb
 bun.lock
 globals.js
 .DS_Store
+generated
