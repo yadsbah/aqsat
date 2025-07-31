@@ -997,7 +997,7 @@ const app = new Elysia()
   .get("/admin/users.html", () => {
     return Bun.file("public/admin/users.html");
   })
-  .listen(3000);
+  .listen(3100);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
