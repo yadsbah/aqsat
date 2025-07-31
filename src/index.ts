@@ -11,10 +11,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "sk.dvls df;sdf lsdjfsjdfglsjdkkj";
 const tokenBlacklist = new Set<string>();
 
 // Commission rates for different installment periods
-const month18 = 0.35; // 35% commission for 18 months
-const month14 = 0.33; // 33% commission for 14 months
-const month12 = 0.3; // 30% commission for 12 months
-const month10 = 0.28; // 28% commission for 10 months
+const month18 = 0.38; // 35% commission for 18 months
+const month14 = 0.36; // 33% commission for 14 months
+const month12 = 0.34; // 30% commission for 12 months
+const month10 = 0.32; // 28% commission for 10 months
 
 // Calculate monthly payment for a given price and months
 function calculateMonthlyPayment(
