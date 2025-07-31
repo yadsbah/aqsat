@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المنتج - اقساط كاكا</title>
+    <link rel="icon" type="image/png" href="/smal.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Arial Unicode MS', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #242424;
+            min-height: 100vh;
+            text-align: right;
+        }
+
+        /* Main Content */
+        .main {
+            margin-top: 100px;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: #cccccc;
+        }
+
+        .breadcrumb a {
+            color: #e6b45b;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #d4a54a;
+        }
+
+        .breadcrumb .separator {
+            color: #666;
+        }
+
+        /* Product Detail Section */
+        .product-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 180, 91, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            aspect-ratio: 1 / 1;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .product-info-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-name-detail {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        /* Installment Options */
+        .installment-options {
+            margin-top: 2rem;
+        }
+
+        .installment-options h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .installment-option {
+            background: linear-gradient(135deg, #e6b45b 0%, #d4a54a 100%);
+            color: #242424;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .installment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            border-color: #fff;
+        }
+
+        .installment-option.selected {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-color: #e6b45b;
+            transform: translateY(-5px);
+        }
+
+        .option-months {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-monthly {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .buy-btn-detail {
+            background: linear-gradient(135deg, #e6b45b 0%, #d4a54a 100%);
+            color: #242424;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .buy-btn-detail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(230, 180, 91, 0.4);
+        }
+
+        .buy-btn-detail:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .product-description-detail {
+            color: #cccccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Related Products Section */
+        .related-section {
+            margin-top: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .related-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .related-product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 180, 91, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(230, 180, 91, 0.2);
+            border-color: rgba(230, 180, 91, 0.5);
+        }
+
+        .related-product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            aspect-ratio: 1 / 1;
+        }
+
+        .related-product-card:hover .related-product-image {
+            transform: scale(1.05);
+        }
+
+        .related-product-info {
+            padding: 1.5rem;
+        }
+
+        .related-product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .related-product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e6b45b;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-product-description {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            .product-name-detail {
+                font-size: 2rem;
+            }
+
+            .product-image {
+                aspect-ratio: 1 / 1;
+                height: auto;
+            }
+
+            .related-products {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .related-product-image {
+                aspect-ratio: 1 / 1;
+                height: auto;
+            }
+
+            .main {
+                padding: 1rem;
+                margin-top: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-detail {
+                padding: 1.5rem;
+            }
+
+            .product-name-detail {
+                font-size: 1.5rem;
+            }
+
+            .related-products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="breadcrumb" id="breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> الرئيسية</a>
+                <span class="separator">/</span>
+                <span id="categoryName">الفئة</span>
+                <span class="separator">/</span>
+                <span id="productNameBreadcrumb">المنتج</span>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>جاري تحميل تفاصيل المنتج...</p>
+            </div>
+
+            <div id="productDetail" style="display: none;">
+                <!-- Product Detail Section -->
+                <div class="product-detail">
+                    <div class="product-image-container">
+                        <img id="productImage" src="" alt="" class="product-image">
+                    </div>
+                    <div class="product-info-detail">
+                        <h1 id="productName" class="product-name-detail"></h1>
+                        <p id="productDescription" class="product-description-detail"></p>
+                        
+                        <!-- Installment Options -->
+                        <div class="installment-options">
+                            <h3>اختر خطة الدفع</h3>
+                            <div id="installmentOptions" class="options-grid">
+                                <!-- Installment options will be loaded here -->
+                            </div>
+                            <button id="buyBtn" class="buy-btn-detail" onclick="buyProduct()" disabled>
+                                <i class="fas fa-shopping-cart"></i> اختر خطة الدفع
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Products Section -->
+                <div class="related-section">
+                    <h2 class="section-title">قد يعجبك أيضاً</h2>
+                    <div id="relatedProducts" class="related-products">
+                        <!-- Related products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        let currentProduct = null;
+        let allProducts = [];
+        let selectedOption = null;
+
+        // Commission rates for different installment periods
+        const month18 = 0.35; // 35% commission for 18 months
+
+        // Calculate monthly payment for a given price and months
+        function calculateMonthlyPayment(basePrice, months, commissionRate) {
+            const totalWithCommission = basePrice * (1 + commissionRate);
+            return Math.round(totalWithCommission / months);
+        }
+
+        // Format number with comma separators
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            loadFooter();
+            loadProductDetail();
+        });
+
+        // Load header component
+        async function loadHeader() {
+            try {
+                const response = await fetch('/components/header');
+                const headerHtml = await response.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+            } catch (error) {
+                console.error('Error loading header:', error);
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer');
+                const footerHtml = await response.text();
+                document.getElementById('footer-placeholder').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+            }
+        }
+
+        // Load product detail
+        async function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                // Get product details
+                const response = await fetch(`/api/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Product not found');
+                }
+                
+                currentProduct = await response.json();
+                
+                // Get all products for related products
+                const allProductsResponse = await fetch('/api/products');
+                allProducts = await allProductsResponse.json();
+                
+                displayProductDetail();
+                displayRelatedProducts();
+                
+                // Hide loading, show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('productDetail').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading product:', error);
+                alert('Product not found!');
+                window.location.href = '/';
+            }
+        }
+
+        // Display product detail
+        function displayProductDetail() {
+            document.getElementById('productImage').src = currentProduct.imageUrl;
+            document.getElementById('productImage').alt = currentProduct.name;
+            document.getElementById('productName').textContent = currentProduct.name;
+            document.getElementById('productDescription').textContent = currentProduct.description;
+            document.getElementById('productNameBreadcrumb').textContent = currentProduct.name;
+            
+            // Update page title
+            document.title = `${currentProduct.name} - اقساط كاكا`;
+            
+            // Display installment options
+            displayInstallmentOptions();
+        }
+
+        // Display related products (5 random products excluding current)
+        function displayRelatedProducts() {
+            const relatedProducts = allProducts
+                .filter(product => product.id !== currentProduct.id)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 5);
+
+            const container = document.getElementById('relatedProducts');
+            container.innerHTML = '';
+
+            relatedProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'related-product-card';
+                card.onclick = () => window.location.href = `/product?id=${product.id}`;
+                
+                card.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="related-product-image">
+                    <div class="related-product-info">
+                        <h3 class="related-product-name">${product.name}</h3>
+                        <div class="related-product-price">${formatNumber(calculateMonthlyPayment(product.price, 18, month18))} دينار/شهر</div>
+                        <p class="related-product-description">${product.description}</p>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Display installment options
+        function displayInstallmentOptions() {
+            const container = document.getElementById('installmentOptions');
+            container.innerHTML = '';
+
+            currentProduct.installmentOptions.forEach((option, index) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = 'installment-option';
+                optionCard.onclick = () => selectOption(index);
+                
+                optionCard.innerHTML = `
+                    <div class="option-months">${option.months} شهر</div>
+                    <div class="option-monthly">${option.monthlyPayment.toLocaleString()} دينار/شهر</div>
+                `;
+                
+                container.appendChild(optionCard);
+            });
+        }
+
+        // Select installment option
+        function selectOption(index) {
+            // Remove previous selection
+            const options = document.querySelectorAll('.installment-option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Select new option
+            options[index].classList.add('selected');
+            selectedOption = currentProduct.installmentOptions[index];
+            
+            // Update buy button
+            const buyBtn = document.getElementById('buyBtn');
+            buyBtn.disabled = false;
+            buyBtn.innerHTML = `<i class="fas fa-shopping-cart"></i> اشتر الآن - ${selectedOption.monthlyPayment.toLocaleString()} دينار/شهر لمدة ${selectedOption.months} شهر`;
+        }
+
+        // Buy product function
+        function buyProduct() {
+            if (!selectedOption) {
+                alert('يرجى اختيار خطة الدفع أولاً.');
+                return;
+            }
+            
+            // Create WhatsApp message
+            const message = `مرحباً! أرغب في شراء المنتج التالي:
+
+المنتج: ${currentProduct.name}
+الخطة المختارة: ${selectedOption.months} شهر
+الدفع الشهري: ${selectedOption.monthlyPayment.toLocaleString()} دينار
+الإجمالي: ${selectedOption.totalWithCommission.toLocaleString()} دينار
+
+هل يمكنني الحصول على مزيد من المعلومات؟`;
+            
+            // Encode message for WhatsApp URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/+9647701044448?text=${encodedMessage}`;
+            
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اقساط كاكا - منتجات الفئة</title>
+    <link rel="icon" type="image/png" href="/smal.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, 'Arial Unicode MS', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #242424;
+            min-height: 100vh;
+            text-align: right;
+        }
+
+        /* Main Content */
+        .main {
+            margin-top: 100px;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: #cccccc;
+        }
+
+        .breadcrumb a {
+            color: #e6b45b;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #d4a54a;
+        }
+
+        .breadcrumb .separator {
+            color: #666;
+        }
+
+        .page-title {
+            color: #e6b45b;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .category-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 180, 91, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .category-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 15px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .category-details h2 {
+            color: #e6b45b;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-details p {
+            color: #cccccc;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            min-height: 400px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 180, 91, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(230, 180, 91, 0.2);
+            border-color: rgba(230, 180, 91, 0.5);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            aspect-ratio: 1 / 1;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e6b45b;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #e6b45b 0%, #d4a54a 100%);
+            color: #242424;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(230, 180, 91, 0.4);
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #cccccc;
+        }
+
+        .no-products i {
+            font-size: 4rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .category-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .category-image {
+                aspect-ratio: 1 / 1;
+                height: auto;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .product-image {
+                aspect-ratio: 1 / 1;
+                height: auto;
+            }
+
+            .main {
+                padding: 1rem;
+                margin-top: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> الرئيسية</a>
+                <span class="separator">/</span>
+                <span id="categoryName">الفئة</span>
+            </div>
+
+            <div class="category-info" id="categoryInfo">
+                <img src="/smal.png" alt="Category" class="category-image" id="categoryImage">
+                <div class="category-details">
+                    <h2 id="categoryTitle">اسم الفئة</h2>
+                    <p id="categoryDescription">وصف الفئة</p>
+                </div>
+            </div>
+
+            <h1 class="page-title">منتجات الفئة</h1>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>جاري تحميل المنتجات...</p>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <div class="no-products" id="noProducts" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h3>لا توجد منتجات في هذه الفئة</h3>
+                <p>سيتم إضافة منتجات قريباً</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Get category ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = window.location.pathname.split('/').pop();
+
+        // Products data
+        let products = [];
+        let category = null;
+
+        // Commission rates for different installment periods
+        const month18 = 0.35; // 35% commission for 18 months
+
+        // Calculate monthly payment for a given price and months
+        function calculateMonthlyPayment(basePrice, months, commissionRate) {
+            const totalWithCommission = basePrice * (1 + commissionRate);
+            return Math.round(totalWithCommission / months);
+        }
+
+        // Format number with comma separators
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            loadFooter();
+            loadCategoryAndProducts();
+        });
+
+        // Load header component
+        async function loadHeader() {
+            try {
+                const response = await fetch('/components/header');
+                const headerHtml = await response.text();
+                document.getElementById('header-placeholder').innerHTML = headerHtml;
+            } catch (error) {
+                console.error('Error loading header:', error);
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer');
+                const footerHtml = await response.text();
+                document.getElementById('footer-placeholder').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+            }
+        }
+
+        // Load category and products
+        async function loadCategoryAndProducts() {
+            try {
+                // Load category details
+                const categoryResponse = await fetch(`/api/categories/${categoryId}`);
+                category = await categoryResponse.json();
+                
+                // Update page title and breadcrumb
+                document.title = `اقساط كاكا - ${category.name}`;
+                document.getElementById('categoryName').textContent = category.name;
+                document.getElementById('categoryTitle').textContent = category.name;
+                document.getElementById('categoryDescription').textContent = 'تصفح جميع المنتجات في هذه الفئة';
+                if (category.imageUrl) {
+                    document.getElementById('categoryImage').src = category.imageUrl;
+                }
+
+                // Load products for this category
+                const productsResponse = await fetch(`/api/categories/${categoryId}/products`);
+                products = await productsResponse.json();
+                
+                if (products.length === 0) {
+                    document.getElementById('noProducts').style.display = 'block';
+                    document.getElementById('productsGrid').style.display = 'none';
+                } else {
+                    displayProducts(products);
+                }
+            } catch (error) {
+                console.error('Error loading category and products:', error);
+                document.getElementById('loading').style.display = 'block';
+            }
+        }
+
+        // Display products
+        function displayProducts(productsToShow) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            productsToShow.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.style.animationDelay = index * 0.1 + 's';
+                card.onclick = () => window.location.href = `/product?id=${product.id}`;
+                
+                card.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">${formatNumber(calculateMonthlyPayment(product.price, 18, month18))} دينار/شهر</div>
+                        <p class="product-description">${product.description || ''}</p>
+                        <button class="buy-btn" onclick="event.stopPropagation(); buyProduct('${product.id}')">
+                            <i class="fas fa-shopping-cart"></i> اشتر الآن
+                        </button>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Buy product function
+        function buyProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            // Create WhatsApp message
+            const message = `مرحباً! أرغب في شراء المنتج التالي:
+
+المنتج: ${product.name}
+السعر الشهري: ${formatNumber(calculateMonthlyPayment(product.price, 18, month18))} دينار/شهر
+
+هل يمكنني الحصول على مزيد من المعلومات؟`;
+            
+            // Encode message for WhatsApp URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/+9647701044448?text=${encodedMessage}`;
+            
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html> 

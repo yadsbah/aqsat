@@ -1,0 +1,163 @@
+<!-- Header Component -->
+<header class="header" id="header">
+    <nav class="nav-container">
+        <a href="/" class="logo">
+            <i class="fas fa-shopping-bag"></i>
+            اقساط كاكا
+        </a>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="البحث في المنتجات...">
+            <button class="search-btn" onclick="searchProducts()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<style>
+    /* Header Styles */
+    .header {
+        background: rgba(36, 36, 36, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+        background: rgba(36, 36, 36, 0.98);
+        padding: 0.5rem 0;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #e6b45b;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
+
+    .logo i {
+        font-size: 2rem;
+    }
+
+    .search-container {
+        flex: 1;
+        max-width: 500px;
+        margin: 0 2rem;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.8rem 3rem 0.8rem 1rem;
+        border: 2px solid #404040;
+        border-radius: 25px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #e6b45b;
+        box-shadow: 0 0 0 3px rgba(230, 180, 91, 0.2);
+        transform: scale(1.02);
+    }
+
+    .search-btn {
+        position: absolute;
+        left: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #e6b45b;
+        color: #242424;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+        background: #d4a54a;
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-container {
+            margin: 0;
+            max-width: 100%;
+        }
+    }
+</style>
+
+<script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Search functionality
+    function searchProducts() {
+        const searchInput = document.getElementById('searchInput');
+        const searchTerm = searchInput.value.trim();
+        
+        if (searchTerm && searchTerm.length > 0) {
+            // Clear the input after search
+            searchInput.value = '';
+            window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
+        } else {
+            // Show a small alert or focus the input
+            searchInput.focus();
+            searchInput.style.borderColor = '#ff6b6b';
+            setTimeout(() => {
+                searchInput.style.borderColor = '#404040';
+            }, 2000);
+        }
+    }
+
+    // Search on Enter key
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+        }
+    });
+</script> 
