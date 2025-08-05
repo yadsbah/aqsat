@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الأقساط - لوحة الإدارة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            direction: rtl;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1rem 0;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            color: #ecf0f1;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #bdc3c7;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #34495e;
+            color: white;
+        }
+
+        .nav-link i {
+            margin-left: 0.5rem;
+            width: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-right: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .speed-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .speed-btn {
+            background: #e9ecef;
+            color: #2c3e50;
+            border: 2px solid #dee2e6;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .speed-btn:hover {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+            transform: translateY(-1px);
+        }
+
+        .speed-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-title {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            text-align: center;
+        }
+
+        .result-card h3 {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .result-card.profit {
+            border-left-color: #27ae60;
+            background: linear-gradient(135deg, #d5f4e6 0%, #a8e6cf 100%);
+        }
+
+        .result-card.admin-fee {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fef9e7 0%, #fdeaa7 100%);
+        }
+
+        .result-card.final-profit {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #fadbd8 0%, #f1948a 100%);
+        }
+
+        .installment-breakdown {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .breakdown-title {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .breakdown-table th,
+        .breakdown-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .breakdown-table th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        .breakdown-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .breakdown-table tr:hover {
+            background: #e9ecef;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .main-content {
+                margin-right: 200px;
+                padding: 1rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .admin-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>لوحة الإدارة</h2>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/admin/dashboard.html" class="nav-link">
+                            <i>📊</i>
+                            لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/categories.html" class="nav-link">
+                            <i>📁</i>
+                            الفئات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/users.html" class="nav-link">
+                            <i>👥</i>
+                            المستخدمين
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/products.html" class="nav-link">
+                            <i>📦</i>
+                            المنتجات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/calculator.html" class="nav-link active">
+                            <i>🧮</i>
+                            حاسبة الأقساط
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1>حاسبة الأقساط</h1>
+                <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+            </header>
+
+            <div class="calculator-container">
+                <h2 class="calculator-title">احسب الأقساط والأرباح</h2>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <div class="input-group">
+                    <label for="productPrice">سعر المنتج (دينار كويتي)</label>
+                    <input type="number" id="productPrice" placeholder="أدخل سعر المنتج" min="0" step="0.01">
+                </div>
+
+                <div class="input-group">
+                    <label for="numberOfMonths">عدد الأشهر</label>
+                    <input type="number" id="numberOfMonths" placeholder="أدخل عدد الأشهر" min="1" max="60" value="18">
+                </div>
+
+                <div class="input-group">
+                    <label for="commissionRate">نسبة العمولة (%)</label>
+                    <input type="number" id="commissionRate" placeholder="أدخل نسبة العمولة" min="0" max="100" step="0.01" value="38">
+                    
+                    <div class="speed-buttons">
+                        <button type="button" class="speed-btn" onclick="setCommissionRate(38)">38%</button>
+                        <button type="button" class="speed-btn" onclick="setCommissionRate(36)">36%</button>
+                        <button type="button" class="speed-btn" onclick="setCommissionRate(34)">34%</button>
+                        <button type="button" class="speed-btn" onclick="setCommissionRate(32)">32%</button>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateInstallments()">
+                    <i>🧮</i> احسب الأقساط
+                </button>
+            </div>
+
+            <div class="results-container" id="resultsContainer">
+                <h2 class="results-title">نتائج الحساب</h2>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h3>سعر المنتج</h3>
+                        <div class="value" id="productPriceResult">0 د.ك</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>الدفع الشهري</h3>
+                        <div class="value" id="monthlyPayment">0 د.ك</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>عدد الأشهر</h3>
+                        <div class="value" id="totalMonths">-</div>
+                    </div>
+                    <div class="result-card">
+                        <h3>إجمالي المبلغ</h3>
+                        <div class="value" id="totalAmount">0 د.ك</div>
+                    </div>
+                    <div class="result-card admin-fee">
+                        <h3>رسوم شركة كي (8%)</h3>
+                        <div class="value" id="adminFeeAmount">0 د.ك</div>
+                    </div>
+                    <div class="result-card profit">
+                        <h3>الربح (بعد خصم 8%)</h3>
+                        <div class="value" id="profitAfter8">0 د.ك</div>
+                    </div>
+                    <div class="result-card final-profit">
+                        <h3>الربح النهائي</h3>
+                        <div class="value" id="finalProfit">0 د.ك</div>
+                    </div>
+                </div>
+
+                <div class="installment-breakdown">
+                    <h3 class="breakdown-title">تفاصيل الأقساط</h3>
+                    <table class="breakdown-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>المبلغ الشهري</th>
+                                <th>المبلغ المتبقي</th>
+                            </tr>
+                        </thead>
+                        <tbody id="breakdownTable">
+                            <!-- Breakdown will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Fixed admin fee percentage
+        const ADMIN_FEE_PERCENTAGE = 0.08; // 8%
+
+        // Format number with comma separators
+        function formatNumber(num) {
+            return num.toLocaleString('ar-KW', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Set commission rate from speed button
+        function setCommissionRate(rate) {
+            document.getElementById('commissionRate').value = rate;
+            
+            // Update active state of speed buttons
+            const speedBtns = document.querySelectorAll('.speed-btn');
+            speedBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === rate + '%') {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Update months display in real-time
+        function updateMonthsDisplay() {
+            const numberOfMonths = document.getElementById('numberOfMonths').value;
+            const totalMonthsElement = document.getElementById('totalMonths');
+            
+            if (numberOfMonths && numberOfMonths > 0) {
+                totalMonthsElement.textContent = numberOfMonths + ' شهر';
+            } else {
+                totalMonthsElement.textContent = '-';
+            }
+        }
+
+        // Calculate installments and profits
+        function calculateInstallments() {
+            const productPrice = parseFloat(document.getElementById('productPrice').value);
+            const numberOfMonths = parseInt(document.getElementById('numberOfMonths').value);
+            const commissionRatePercent = parseFloat(document.getElementById('commissionRate').value);
+            
+            const errorMessage = document.getElementById('errorMessage');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            // Validate inputs
+            if (!productPrice || productPrice <= 0) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'يرجى إدخال سعر صحيح للمنتج';
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            if (!numberOfMonths || numberOfMonths <= 0 || numberOfMonths > 60) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'يرجى إدخال عدد أشهر صحيح (1-60)';
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            if (!commissionRatePercent || commissionRatePercent < 0 || commissionRatePercent > 100) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'يرجى إدخال نسبة عمولة صحيحة (0-100)';
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            // Hide error message
+            errorMessage.style.display = 'none';
+
+            // Convert percentage to decimal
+            const commissionRate = commissionRatePercent / 100;
+
+            // Calculate total with commission
+            const totalWithCommission = productPrice * (1 + commissionRate);
+            
+            // Calculate monthly payment
+            const monthlyPayment = totalWithCommission / numberOfMonths;
+            
+            // Calculate profit after 8% admin fee
+            const profitAfter8 = totalWithCommission * (1 - ADMIN_FEE_PERCENTAGE);
+            
+            // Calculate admin fee amount
+            const adminFeeAmount = totalWithCommission * ADMIN_FEE_PERCENTAGE;
+            
+            // Calculate final profit (total - product price - 8% of total)
+            const finalProfit = totalWithCommission - productPrice - adminFeeAmount;
+
+            // Display results
+            document.getElementById('productPriceResult').textContent = formatNumber(productPrice) + ' د.ك';
+            document.getElementById('monthlyPayment').textContent = formatNumber(monthlyPayment) + ' د.ك';
+            document.getElementById('totalMonths').textContent = numberOfMonths + ' شهر';
+            document.getElementById('totalAmount').textContent = formatNumber(totalWithCommission) + ' د.ك';
+            document.getElementById('adminFeeAmount').textContent = formatNumber(adminFeeAmount) + ' د.ك';
+            document.getElementById('profitAfter8').textContent = formatNumber(profitAfter8) + ' د.ك';
+            document.getElementById('finalProfit').textContent = formatNumber(finalProfit) + ' د.ك';
+
+            // Generate breakdown table
+            generateBreakdownTable(monthlyPayment, totalWithCommission, numberOfMonths);
+
+            // Show results
+            resultsContainer.style.display = 'block';
+        }
+
+        // Generate installment breakdown table
+        function generateBreakdownTable(monthlyPayment, totalAmount, numberOfMonths) {
+            const tableBody = document.getElementById('breakdownTable');
+            tableBody.innerHTML = '';
+
+            for (let i = 1; i <= numberOfMonths; i++) {
+                const remainingAmount = totalAmount - (monthlyPayment * i);
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${i}</td>
+                    <td>${formatNumber(monthlyPayment)} د.ك</td>
+                    <td>${remainingAmount > 0 ? formatNumber(remainingAmount) + ' د.ك' : '0.00 د.ك'}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin/login.html';
+        }
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin/login.html';
+                return;
+            }
+
+            // Set default active speed button
+            setCommissionRate(38);
+
+            // Add event listeners for Enter key on all inputs
+            const inputs = ['productPrice', 'numberOfMonths', 'commissionRate'];
+            inputs.forEach(inputId => {
+                document.getElementById(inputId).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateInstallments();
+                    }
+                });
+            });
+
+            // Add event listener for numberOfMonths input to update display in real-time
+            document.getElementById('numberOfMonths').addEventListener('input', updateMonthsDisplay);
+            
+            // Initialize months display
+            updateMonthsDisplay();
+        });
+    </script>
+</body>
+</html> 
