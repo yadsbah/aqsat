@@ -391,7 +391,7 @@
                 <div class="error-message" id="errorMessage"></div>
                 
                 <div class="input-group">
-                    <label for="productPrice">سعر المنتج (دينار كويتي)</label>
+                    <label for="productPrice">سعر المنتج (د.ع)</label>
                     <input type="number" id="productPrice" placeholder="أدخل سعر المنتج" min="0" step="0.01">
                 </div>
 
@@ -423,11 +423,11 @@
                 <div class="results-grid">
                     <div class="result-card">
                         <h3>سعر المنتج</h3>
-                        <div class="value" id="productPriceResult">0 د.ك</div>
+                        <div class="value" id="productPriceResult">0 د.ع</div>
                     </div>
                     <div class="result-card">
                         <h3>الدفع الشهري</h3>
-                        <div class="value" id="monthlyPayment">0 د.ك</div>
+                        <div class="value" id="monthlyPayment">0 د.ع</div>
                     </div>
                     <div class="result-card">
                         <h3>عدد الأشهر</h3>
@@ -435,19 +435,19 @@
                     </div>
                     <div class="result-card">
                         <h3>إجمالي المبلغ</h3>
-                        <div class="value" id="totalAmount">0 د.ك</div>
+                        <div class="value" id="totalAmount">0 د.ع</div>
                     </div>
                     <div class="result-card admin-fee">
                         <h3>رسوم شركة كي (8%)</h3>
-                        <div class="value" id="adminFeeAmount">0 د.ك</div>
+                        <div class="value" id="adminFeeAmount">0 د.ع</div>
                     </div>
                     <div class="result-card profit">
                         <h3>الربح (بعد خصم 8%)</h3>
-                        <div class="value" id="profitAfter8">0 د.ك</div>
+                        <div class="value" id="profitAfter8">0 د.ع</div>
                     </div>
                     <div class="result-card final-profit">
                         <h3>الربح النهائي</h3>
-                        <div class="value" id="finalProfit">0 د.ك</div>
+                        <div class="value" id="finalProfit">0 د.ع</div>
                     </div>
                 </div>
 
@@ -561,13 +561,13 @@
             const finalProfit = totalWithCommission - productPrice - adminFeeAmount;
 
             // Display results
-            document.getElementById('productPriceResult').textContent = formatNumber(productPrice) + ' د.ك';
-            document.getElementById('monthlyPayment').textContent = formatNumber(monthlyPayment) + ' د.ك';
+            document.getElementById('productPriceResult').textContent = formatNumber(productPrice) + ' د.ع';
+            document.getElementById('monthlyPayment').textContent = formatNumber(monthlyPayment) + ' د.ع';
             document.getElementById('totalMonths').textContent = numberOfMonths + ' شهر';
-            document.getElementById('totalAmount').textContent = formatNumber(totalWithCommission) + ' د.ك';
-            document.getElementById('adminFeeAmount').textContent = formatNumber(adminFeeAmount) + ' د.ك';
-            document.getElementById('profitAfter8').textContent = formatNumber(profitAfter8) + ' د.ك';
-            document.getElementById('finalProfit').textContent = formatNumber(finalProfit) + ' د.ك';
+            document.getElementById('totalAmount').textContent = formatNumber(totalWithCommission) + ' د.ع';
+            document.getElementById('adminFeeAmount').textContent = formatNumber(adminFeeAmount) + ' د.ع';
+            document.getElementById('profitAfter8').textContent = formatNumber(profitAfter8) + ' د.ع';
+            document.getElementById('finalProfit').textContent = formatNumber(finalProfit) + ' د.ع';
 
             // Generate breakdown table
             generateBreakdownTable(monthlyPayment, totalWithCommission, numberOfMonths);
@@ -587,8 +587,8 @@
                 
                 row.innerHTML = `
                     <td>${i}</td>
-                    <td>${formatNumber(monthlyPayment)} د.ك</td>
-                    <td>${remainingAmount > 0 ? formatNumber(remainingAmount) + ' د.ك' : '0.00 د.ك'}</td>
+                    <td>${formatNumber(monthlyPayment)} د.ع</td>
+                    <td>${remainingAmount > 0 ? formatNumber(remainingAmount) + ' د.ع' : '0.00 د.ع'}</td>
                 `;
                 
                 tableBody.appendChild(row);
